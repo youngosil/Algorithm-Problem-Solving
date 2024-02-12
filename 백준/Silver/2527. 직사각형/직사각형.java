@@ -5,7 +5,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringBuilder sb = new StringBuilder();
 		
 		// 테케 4개
 		for (int tc=1; tc<=4; tc++) {
@@ -23,23 +23,23 @@ public class Main {
 			
 			// 닿지 않는 경우 -> 점이 닿는 경우 -> 선분이 닿는 경우 -> 면적이 겹치는 경우
 			if (x[2]>x[1] || x[3]<x[0] || y[2]>y[1] || y[3]<y[0]) {
-				bw.write("d\n");
+				sb.append("d").append("\n");
 			} else if (x[0]==x[3] && y[0]==y[3]
 					|| x[1]==x[2] && y[0]==y[3]
 					|| x[0]==x[3] && y[1]==y[2]
 					|| x[1]==x[2] && y[1]==y[2]) {
-				bw.write("c\n");
+				sb.append("c").append("\n");
 			} else if (x[0]==x[3]
 					|| x[1]==x[2]
 					|| y[0]==y[3]
 					|| y[1]==y[2]) {
-				bw.write("b\n");
+				sb.append("b").append("\n");
 			} else {
-				bw.write("a\n");
+				sb.append("a").append("\n");
 			}
 		}
 		
-		bw.close();
+		System.out.println(sb.toString());
 		br.close();
 		
 	}
