@@ -35,7 +35,10 @@ public class Main {
 		while (true) {
 			st = new StringTokenizer(br.readLine());
 			k = Integer.parseInt(st.nextToken()); // 첫 수가 숫자 개수
-			if (k==0) break; //0이면 끝난거
+			if (k==0) {
+				br.close();
+				break; //0이면 끝난거
+			}
 			// 그게 아니라면
 			
 			arr = new int[k]; // 수들 넣을 집합 (오름차순임)
