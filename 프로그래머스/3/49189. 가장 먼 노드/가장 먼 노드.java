@@ -1,54 +1,55 @@
 import java.io.*;
 import java.util.*;
 
-public class Edge {
-    int st,ed;
-    Edge(int st, int ed) {
-        this.st = st;
-        this.ed = ed;
-    }
-}
-
 class Solution {
+    
+    static Map<Integer,List<Integer>> map = new HashMap<>();
+    static Queue<int[]> queue = new LinkedList<>();
+    
     public int solution(int n, int[][] edge) {
-        int answer = 0;
-        List<Integer>[] edges= new ArrayList[n+1];
-        for (int i=1; i<=n; i++) {
-            edges[i] = new ArrayList<>();
-        }
-  
-        for (int i=0; i<edge.length; i++) {
-            int A = edge[i][0];
-            int B = edge[i][1];
-            edges[A].add(B);
-            edges[B].add(A);
-        }
         
-        int[] dist = new int[n+1];
-        dist[1] = 1; //방문처리, 처음 cnt를 1로 설정
-        int pick = 1; int max = 0;
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(1);
-        
-        while (pick<n) {
-            int idx = q.poll();
+        boolean[] vis = new boolean[n+1];
+        boolean[][] adj = new boolean[n+1][n+1];
+        for (int r=0; r<edge.length; r++) {
+            int x = edge[r][0];
+            int y = edge[r][1];
             
-            for (int num : edges[idx]) {
-                if (dist[num]==0) {
-                    dist[num] = dist[idx]+1;
-                    q.offer(num);
-                    pick++;
-                    max = Math.max(max,dist[num]);
-                }
+            adj[x][y] = true;
+            adj[y][x] = true;
+        }
+        
+        // 일단 node 1부터 처리
+        vis[1] = true;
+        queue.offer(new int[] {1,0});
+        for (int i=1; i<n+1; i++) {
+            if (!vis[i] && adj[1][i]) {
+                vis[i] = true;
+                queue.offer(new int[] {i,1});
+            } 
+        }
+        
+        while (!queue.isEmpty()) {
+            int[] tmp = queue.poll();
+            if (map.get(tmp[1])==null) {
+                map.put(tmp[1],new ArrayList<>());
             }
             
+            map.get(tmp[1]).add(tmp[0]);
+            
+            for (int i=1; i<n+1; i++) {
+                if (!vis[i] && adj[tmp[0]][i]) {
+                    vis[i] = true;
+                    queue.offer(new int[] {i,tmp[1]+1});
+                }  
+            }
+
         }
         
-        for (int i=1; i<n+1; i++) {
-            if (dist[i]==max) answer++;
+        int maxKey = Integer.MIN_VALUE;
+        for (int key : map.keySet()) {
+            maxKey = Math.max(maxKey, key);
         }
-        
-        
-        return answer;
+                
+        return map.get(maxKey).size();
     }
 }
